@@ -1,0 +1,16 @@
+{
+    "display_name": "繁體匯入",
+    "loading_order": 100,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "komic",
+    "version": "1.0.0",
+    "hooks": {
+        "activate": "init",
+        "enable": "init",
+        "disable": "cleanup",
+        "clean": "cleanup"
+    }
+}

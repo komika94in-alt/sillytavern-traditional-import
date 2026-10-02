@@ -1,0 +1,19 @@
+{
+  "name": "sillytavern-traditional-import",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SillyTavern extension that converts Simplified Chinese imports to Traditional Chinese (Taiwan) before importing.",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "verify:samples": "node scripts/verify-samples.mjs",
+    "package": "node scripts/package.mjs"
+  },
+  "dependencies": {
+    "opencc-js": "1.4.2"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}

@@ -1,0 +1,16 @@
+.stti-import-button .stti-import-glyph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1em;
+    font-family: sans-serif;
+    font-size: 0.95em;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.stti-import-button.stti-busy {
+    cursor: progress;
+    opacity: 0.55;
+    pointer-events: none;
+}
