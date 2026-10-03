@@ -11,7 +11,7 @@ await build({
     charset: 'utf8',
     legalComments: 'eof',
     banner: {
-        js: '/* 繁體匯入 v1.0.0 — bundled with opencc-js 1.4.2 */',
+        js: '/* 繁體匯入 v1.0.1 — bundled with opencc-js 1.4.2 */',
     },
 });
 

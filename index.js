@@ -1,4 +1,4 @@
-/* 繁體匯入 v1.0.0 — bundled with opencc-js 1.4.2 */
+/* 繁體匯入 v1.0.1 — bundled with opencc-js 1.4.2 */
 
 // node_modules/opencc-js/dist/esm/cn2t.js
 var n = class {
@@ -692,6 +692,8 @@ var targets = [
 ];
 var observer;
 var injectQueued = false;
+var active = false;
+var waitingForDom = false;
 function toast(level, message, title = "繁體匯入") {
   const service = globalThis.toastr;
   if (service && typeof service[level] === "function") {
@@ -793,6 +795,7 @@ function createButton(config, target, input) {
   target.insertAdjacentElement("afterend", button);
 }
 function injectButtons() {
+  if (!active) return;
   for (const config of targets) {
     if (document.getElementById(config.buttonId)) {
       continue;
@@ -801,7 +804,8 @@ function injectButtons() {
     if (!(target instanceof HTMLElement)) {
       continue;
     }
-    const input = document.getElementById(config.inputId) ?? createInput(config);
+    document.getElementById(config.inputId)?.remove();
+    const input = createInput(config);
     createButton(config, target, input);
   }
 }
@@ -812,20 +816,41 @@ function queueInjection() {
   injectQueued = true;
   queueMicrotask(() => {
     injectQueued = false;
-    injectButtons();
+    if (active) injectButtons();
   });
 }
 async function init() {
-  cleanup();
+  if (!document.body || document.readyState === "loading") {
+    if (!waitingForDom) {
+      waitingForDom = true;
+      document.addEventListener("DOMContentLoaded", onDomReady, { once: true });
+    }
+    return;
+  }
+  if (active) {
+    injectButtons();
+    return;
+  }
+  active = true;
   injectButtons();
   observer = new MutationObserver(queueInjection);
   observer.observe(document.body, { childList: true, subtree: true });
   console.info("[繁體匯入] 擴充已啟用");
 }
 function cleanup() {
+  active = false;
+  waitingForDom = false;
+  document.removeEventListener("DOMContentLoaded", onDomReady);
   observer?.disconnect();
   observer = void 0;
   document.querySelectorAll(`.${EXTENSION_CLASS}`).forEach((element) => element.remove());
+}
+function onDomReady() {
+  waitingForDom = false;
+  void init();
+}
+if (typeof document !== "undefined") {
+  void init();
 }
 export {
   cleanup,
